@@ -81,7 +81,7 @@ public class DeviceRegistration {
                 .create();
         JSONObject deviceData = new JSONObject();
         try {
-            deviceData = new JSONObject(gson.toJson(getDevice()));
+            deviceData.put("device", new JSONObject(gson.toJson(getDevice())));
         } catch (JSONException e) {
             e.printStackTrace();
             Logger.debug(e.getMessage());
