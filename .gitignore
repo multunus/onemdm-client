@@ -1,7 +1,30 @@
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
+/.idea
 .DS_Store
 /build
-/captures
+/app/mirror
+*.iml
+
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+Config.java
+
+# Java class files
+*.class
+
+# Mac files
+.DS_Store
+
+#sass cache
+.sass-cache
+
+#build keystore
+*.keystore
+*.key
+*.jks
+!debug.keystore

@@ -27,6 +27,7 @@ import org.json.JSONObject;
  * Created by yedhukrishnan on 15/10/15.
  */
 public class DeviceRegistration {
+
     Context context;
     RequestQueue requestQueue;
 
@@ -49,7 +50,7 @@ public class DeviceRegistration {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Logger.debug(error.toString());
+                        Logger.warning(error.toString());
                     }
                 }
         );
@@ -61,18 +62,17 @@ public class DeviceRegistration {
         SharedPreferences.Editor editor = this.context.getSharedPreferences(
                 OneMDMActivity.ONEMDM_SHARED_PREFERENCE, Context.MODE_PRIVATE).edit();
         try {
-            accessToken = response.getString("access_token");
+            accessToken = response.getString(Config.ACCESS_TOKEN);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        editor.putString("access_token", accessToken);
-        editor.putBoolean("device_registered", true);
+        editor.putString(Config.ACCESS_TOKEN, accessToken);
         editor.commit();
     }
 
     public boolean isRegistered() {
         return this.context.getSharedPreferences(OneMDMActivity.ONEMDM_SHARED_PREFERENCE,
-                Context.MODE_PRIVATE).getBoolean("device_registered", false);
+                Context.MODE_PRIVATE).getString(Config.ACCESS_TOKEN, "").equals("");
     }
 
     private JSONObject getJsonPayload() {
@@ -84,8 +84,9 @@ public class DeviceRegistration {
             deviceData.put("device", new JSONObject(gson.toJson(getDevice())));
         } catch (JSONException e) {
             e.printStackTrace();
-            Logger.debug(e.getMessage());
+            Logger.warning(e.getMessage());
         }
+        Logger.debug("Device data to be send "+deviceData);
         return deviceData;
     }
 
@@ -102,9 +103,10 @@ public class DeviceRegistration {
     }
 
     private String getImeiNumber() {
-        TelephonyManager telephonyManager =
-                (TelephonyManager) this.context.getSystemService(Context.TELEPHONY_SERVICE);
-        return telephonyManager.getDeviceId();
+//        TelephonyManager telephonyManager =
+//                (TelephonyManager) this.context.getSystemService(Context.TELEPHONY_SERVICE);
+//        return telephonyManager.getDeviceId();
+        return "";
     }
 
     private String getAndroidId() {

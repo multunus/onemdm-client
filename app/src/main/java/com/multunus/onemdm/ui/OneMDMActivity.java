@@ -2,9 +2,11 @@ package com.multunus.onemdm.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.multunus.onemdm.R;
 import com.multunus.onemdm.network.DeviceRegistration;
+import com.multunus.onemdm.util.Logger;
 
 public class OneMDMActivity extends AppCompatActivity {
     public static String ONEMDM_SHARED_PREFERENCE = "onemdm";
@@ -18,7 +20,7 @@ public class OneMDMActivity extends AppCompatActivity {
 
     private void registerDeviceIfNotRegistered() {
         DeviceRegistration deviceRegistration = new DeviceRegistration(this);
-        if(!deviceRegistration.isRegistered()) {
+        if(deviceRegistration.isRegistered()) {
             deviceRegistration.sendRegistrationRequestToServer();
         }
     }
