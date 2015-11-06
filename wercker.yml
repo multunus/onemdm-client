@@ -1,0 +1,53 @@
+box: wercker/android
+box: wercker/android
+# Build definition
+build:
+  # The steps that will be executed on build
+  steps:
+    - script:
+        name: Update Android SDK
+        code: |
+          gradle -v
+          echo $ANDROID_HOME
+          echo $ANDROID_SDK_VERSION
+          echo $ANDROID_BUILD_TOOLS
+          echo $ANDROID_UPDATE_FILTER
+          echo y | android update sdk --no-ui --all --filter "tools"
+          echo y |android update sdk --no-ui --all --filter "platform-tools"
+          echo y |android update sdk --no-ui --all --filter "android-19,build-tools-23.0.1,android-23"
+          echo y |android update sdk --no-ui --all --filter "extra-android-m2repository"
+          echo y |android update sdk --no-ui --all --filter "extra-android-support"
+          echo y |android update sdk --no-ui --all --filter "extra-google-m2repository"
+          echo y |android update sdk --no-ui --all --filter "extra-google-google_play_services"
+          echo y |android update lib-project --path ./appcompat --target android-23
+          echo y |android update project --path ./core --library ../appcompat --target android-23
+
+    # A step that executes `gradle build` command
+    - script:
+        name: copy config
+        code: openssl aes-256-cbc -k $DKEY -in am.enc -out app/am.key -d
+    - script:
+        name: copy config
+        code: cp app/src/main/java/com/multunus/onemdm/config/Config.java.example app/src/main/java/com/multunus/onemdm/config/Config.java
+    - script:
+        name: run gradle
+        code: |
+          ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
+  after-steps:
+        - wantedly/pretty-slack-notify:
+            webhook_url: $SLACK_WEBHOOK_URL
+            channel: one-mdm
+deploy:
+  steps:
+    - script:
+        name: setup awscli
+        code: sudo pip install awscli
+    - script:
+        name: Upload to S3 
+        code: ./publish.sh
+  after-steps:
+        - wantedly/pretty-slack-notify:
+            webhook_url: $SLACK_WEBHOOK_URL
+            channel: one-mdm
+
+
