@@ -23,9 +23,9 @@ build:
           echo y |android update project --path ./core --library ../appcompat --target android-23
 
     # A step that executes `gradle build` command
-    - script:
-        name: copy config
-        code: openssl aes-256-cbc -k $DKEY -in am.enc -out app/am.key -d
+    #- script:
+        #name: copy config
+        #code: openssl aes-256-cbc -k $DKEY -in am.enc -out app/am.key -d
     - script:
         name: copy config
         code: cp app/src/main/java/com/multunus/onemdm/config/Config.java.example app/src/main/java/com/multunus/onemdm/config/Config.java
