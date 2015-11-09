@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+def buildNumber = BUILD_NUM.toInteger()
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -8,15 +10,9 @@ android {
         applicationId "com.multunus.onemdm"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode buildNumber
+        versionName "1.0"+buildNumber
     }
-//    buildTypes {
-//        release {
-//            minifyEnabled false
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//        }
-//    }
 
     signingConfigs {
         release {
@@ -44,7 +40,7 @@ android {
                     }
                     output.outputFile = new File(
                             output.outputFile.parent,
-                            "${buildTypeName}-v${variant.versionName}.apk")
+                            "onemdm${buildTypeName}-v${variant.versionName}.apk")
                 }
             }
         }
