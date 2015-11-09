@@ -5,7 +5,7 @@ package com.multunus.onemdm.config;
  */
 public class Config {
     public static final String ACCESS_TOKEN = "access_token";
-    public static final String HOST_URL = "http://onemdm.herokuapp.com/admin";
+    public static final String HOST_URL = "http://onemdm.herokuapp.com/";
     public static final String REGISTRATION_URL = HOST_URL + "devices";
 
 }
