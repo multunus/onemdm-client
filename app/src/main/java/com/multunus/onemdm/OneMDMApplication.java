@@ -9,8 +9,9 @@ public class OneMDMApplication extends Application{
     @Override
     public void onCreate(){
         super.onCreate();
-        if(!BuildConfig.DEBUG) {
-            Rollbar.init(this, "d992c2d5219c4ccca3ead5622afa65c5", "production");
-        }
+//        if(!BuildConfig.DEBUG) {
+        Rollbar.init(this, "c096aaa23042478fafb34be8f937ad5c", "production");
+        Rollbar.reportMessage("A test message", "debug");
+//        }
     }
 }
