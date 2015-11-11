@@ -7,7 +7,7 @@ Clone the repo:
 
 ``` bash
 git clone https://github.com/multunus/onemdm-client.git
-cd one-mdmclient
+cd onemdm-client
 cp src/main/java/com/multunus/onemdm/config/Config.java.example src/main/java/com/multunus/one_mdm_client/Config.java
 ```
 
