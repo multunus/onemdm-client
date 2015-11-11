@@ -5,19 +5,26 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:name=".OneMDMApplication">
         <activity android:name=".ui.OneMDMActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".heartbeat.HeartbeatListener" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="40398ae61eb2772d8e7ea420907cab4c04fbe419" />
     </application>
 
 </manifest>

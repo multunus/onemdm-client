@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -16,16 +15,13 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.multunus.onemdm.config.Config;
+import com.multunus.onemdm.heartbeat.HeartbeatRecorder;
 import com.multunus.onemdm.model.Device;
-import com.multunus.onemdm.ui.OneMDMActivity;
 import com.multunus.onemdm.util.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by yedhukrishnan on 15/10/15.
- */
 public class DeviceRegistration {
 
     Context context;
@@ -59,20 +55,18 @@ public class DeviceRegistration {
 
     private void saveSettings(JSONObject response) {
         String accessToken = "";
+        long nextHeartbeatTime = System.currentTimeMillis();
         SharedPreferences.Editor editor = this.context.getSharedPreferences(
-                OneMDMActivity.ONEMDM_SHARED_PREFERENCE, Context.MODE_PRIVATE).edit();
+                Config.PREFERENCE_TAG, Context.MODE_PRIVATE).edit();
         try {
             accessToken = response.getString(Config.ACCESS_TOKEN);
+            nextHeartbeatTime = response.getLong("next_heartbeat_time") * 1000;
         } catch (JSONException e) {
-            e.printStackTrace();
+            Logger.warning("Exception while registering",e);
         }
         editor.putString(Config.ACCESS_TOKEN, accessToken);
         editor.commit();
-    }
-
-    public boolean isRegistered() {
-        return this.context.getSharedPreferences(OneMDMActivity.ONEMDM_SHARED_PREFERENCE,
-                Context.MODE_PRIVATE).getString(Config.ACCESS_TOKEN, "").equals("");
+        new HeartbeatRecorder(context).configureNextHeartbeatWithMilliSeconds(nextHeartbeatTime);
     }
 
     private JSONObject getJsonPayload() {
