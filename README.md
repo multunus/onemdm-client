@@ -11,13 +11,18 @@ cd onemdm-client
 cp src/main/java/com/multunus/onemdm/config/Config.java.example src/main/java/com/multunus/one_mdm_client/Config.java
 ```
 
-Set the following constants in `Config.java`:
+Change the following constant(s) in `Config.java`:
 
-* `ACCESS_TOKEN`
 * `HOST_URL`
 
-Build the project from the command line:
+Build the debug version of the APK from the command line:
 
 ``` bash
-./gradlew clean build
+./gradlew clean installDebug
 ```
+
+### TODO
+
+- How to build the release version
+- How to change the version number
+
