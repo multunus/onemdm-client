@@ -4,8 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.gms.gcm.GcmListenerService;
+import com.multunus.onemdm.config.Config;
+import com.multunus.onemdm.service.AppInstallerService;
 import com.multunus.onemdm.util.Logger;
-import com.rollbar.android.Rollbar;
 
 public class GCMListenerService extends GcmListenerService {
 
@@ -21,13 +22,8 @@ public class GCMListenerService extends GcmListenerService {
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
         Logger.debug("Message: " + message);
-        try {
-//            Intent intent = new Intent(this, AppInstallerService.class);
-//            startService(intent);
-        } catch (Exception ex) {
-            Logger.warning("Exception while parsing JSON or installing app",ex);
-            Rollbar.reportException(ex);
-        }
-
+        Intent intent = new Intent(this, AppInstallerService.class);
+        intent.putExtra(Config.APP_URL,"https://s3.amazonaws.com/onemdm/onemdm.apk");
+        startService(intent);
     }
 }
