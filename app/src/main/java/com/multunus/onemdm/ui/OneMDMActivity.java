@@ -3,6 +3,7 @@ package com.multunus.onemdm.ui;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import com.crashlytics.android.Crashlytics;
 import com.multunus.onemdm.BuildConfig;
 import com.multunus.onemdm.R;
 import com.multunus.onemdm.network.DeviceRegistration;
+import com.multunus.onemdm.service.RegistrationService;
 import com.multunus.onemdm.util.Logger;
 import io.fabric.sdk.android.Fabric;
 
@@ -34,8 +36,8 @@ public class OneMDMActivity extends AppCompatActivity {
 
 
     private void registerDevice() {
-        DeviceRegistration deviceRegistration = new DeviceRegistration(this);
-        deviceRegistration.sendRegistrationRequestToServer();
+        Intent intent = new Intent(this, RegistrationService.class);
+        startService(intent);
     }
 
     private boolean isNetworkAvailable(){

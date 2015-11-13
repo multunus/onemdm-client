@@ -11,6 +11,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,6 +20,7 @@ import com.multunus.onemdm.config.Config;
 import com.multunus.onemdm.heartbeat.HeartbeatRecorder;
 import com.multunus.onemdm.model.Device;
 import com.multunus.onemdm.util.Logger;
+import com.rollbar.android.Rollbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,19 +79,24 @@ public class DeviceRegistration {
         JSONObject deviceData = new JSONObject();
         try {
             deviceData.put("device", new JSONObject(gson.toJson(getDevice())));
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Logger.warning(e.getMessage());
+        } catch (Exception e) {
+            Logger.error(e);
+            Rollbar.reportException(e);
         }
         Logger.debug("Device data to be send "+deviceData);
         return deviceData;
     }
 
-    private Device getDevice() {
+    private Device getDevice() throws Exception{
         Device device = new Device();
         device.setModel(getDeviceModel());
         device.setImeiNumber(getImeiNumber());
         device.setUniqueId(getAndroidId());
+        InstanceID instanceID = InstanceID.getInstance(context);
+        String gcmToken = instanceID.getToken(Config.GCM_SENDER_ID,
+                GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+        Logger.debug("GCM Registration Token: " + gcmToken);
+        device.setGcmToken(gcmToken);
         return device;
     }
 

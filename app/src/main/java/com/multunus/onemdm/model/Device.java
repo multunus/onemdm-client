@@ -7,6 +7,15 @@ public class Device {
     private String imeiNumber;
     private String model;
     private String uniqueId;
+    private String gcmToken;
+
+    public String getGcmToken() {
+        return gcmToken;
+    }
+
+    public void setGcmToken(String gcmToken) {
+        this.gcmToken = gcmToken;
+    }
 
     public String getImeiNumber() {
         return imeiNumber;
