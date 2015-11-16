@@ -11,5 +11,5 @@ public class Config {
     public static String PREFERENCE_TAG = "onemdm";
     public static final int DEFAULT_HEARTBEAT_RETRY_INTERVAL = 30;
     public static final String GCM_SENDER_ID = "958182646350";
-    public static final String APP_URL = "APP_URL";
+    public static final String APP_DATA = "APP_DATA";
 }
