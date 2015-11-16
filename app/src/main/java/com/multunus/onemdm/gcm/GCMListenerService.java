@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.gms.gcm.GcmListenerService;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.multunus.onemdm.config.Config;
+import com.multunus.onemdm.model.App;
 import com.multunus.onemdm.service.AppInstallerService;
 import com.multunus.onemdm.util.Logger;
 
@@ -23,7 +27,15 @@ public class GCMListenerService extends GcmListenerService {
         String message = data.getString("message");
         Logger.debug("Message: " + message);
         Intent intent = new Intent(this, AppInstallerService.class);
-        intent.putExtra(Config.APP_URL,"https://s3.amazonaws.com/onemdm/onemdm.apk");
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
+        App app = gson.fromJson(message,App.class);
+        Logger.debug(" app ID"+app.getId());
+        Logger.debug(" app package name "+app.getPackageName());
+        Logger.debug(" APK URL = "+app.getApkUrl());
+        intent.putExtra(Config.APP_DATA,app);
+//        intent.putExtra(Config.APP_URL,"http://192.168.2.92:3000/onemdm-debug-v1.01.apk");
         startService(intent);
     }
 }

@@ -16,12 +16,14 @@ import android.view.View;
 
 import com.multunus.onemdm.R;
 import com.multunus.onemdm.config.Config;
+import com.multunus.onemdm.model.App;
 import com.multunus.onemdm.util.Logger;
 
 public class AppInstallerService extends IntentService {
 
     private Context context;
     private String apkURL = "";
+    private App app;
 
     public AppInstallerService() {
         super("AppInstallerService");
@@ -31,7 +33,8 @@ public class AppInstallerService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Logger.debug("AppInstallerService  started");
         this.context = getApplicationContext();
-        this.apkURL = intent.getStringExtra(Config.APP_URL);
+        this.app = intent.getParcelableExtra(Config.APP_DATA);
+        this.apkURL = app.getApkUrl();
         Logger.debug("APP URL "+apkURL);
         installOrDownloadApp(apkURL);
     }
@@ -118,10 +121,15 @@ public class AppInstallerService extends IntentService {
     }
 
     private PendingIntent createNotificationActionForInstall() {
-        Intent pendingIntent = new Intent(Intent.ACTION_VIEW);
-        pendingIntent.setDataAndType(Uri.fromFile(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS+"/onemdm.apk")),
-                "application/vnd.android.package-archive");
+//        Intent pendingIntent = new Intent(Intent.ACTION_VIEW);
+//        pendingIntent.setDataAndType(Uri.fromFile(
+//                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/onemdm.apk")),
+//                "application/vnd.android.package-archive");
+        Intent pendingIntent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+        pendingIntent.setData(Uri.fromFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/onemdm.apk")));
+        pendingIntent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
+        pendingIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+        pendingIntent.putExtra(Intent.EXTRA_INSTALLER_PACKAGE_NAME, app.getPackageName());
         return PendingIntent.getActivity(
                 context,
                 View.generateViewId(),
