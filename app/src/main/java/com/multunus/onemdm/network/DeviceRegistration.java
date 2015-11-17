@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -83,7 +84,7 @@ public class DeviceRegistration {
             Logger.error(e);
             Rollbar.reportException(e);
         }
-        Logger.debug("Device data to be send "+deviceData);
+        Logger.debug("Device data to be send " + deviceData);
         return deviceData;
     }
 
@@ -105,9 +106,14 @@ public class DeviceRegistration {
     }
 
     private String getImeiNumber() {
-//        TelephonyManager telephonyManager =
-//                (TelephonyManager) this.context.getSystemService(Context.TELEPHONY_SERVICE);
-//        return telephonyManager.getDeviceId();
+        try {
+            TelephonyManager telephonyManager =
+                    (TelephonyManager) this.context.getSystemService(Context.TELEPHONY_SERVICE);
+            return telephonyManager.getDeviceId();
+        }
+        catch (Exception ex){
+            //Ignoring as its a known bug in Marshmellow
+        }
         return "";
     }
 
