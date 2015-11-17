@@ -43,6 +43,11 @@
         </receiver>
         <!-- [END gcm_receiver] -->
 
+        <activity
+            android:name=".ui.AppInstallerActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay" >
+        </activity>
 
         <!-- [START gcm_listener] -->
         <service

@@ -121,13 +121,9 @@ public class AppInstallerService extends IntentService {
     }
 
     private PendingIntent createNotificationActionForInstall() {
-//        Intent pendingIntent = new Intent(Intent.ACTION_VIEW);
-//        pendingIntent.setDataAndType(Uri.fromFile(
-//                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/onemdm.apk")),
-//                "application/vnd.android.package-archive");
         Intent pendingIntent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
         pendingIntent.setData(Uri.fromFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/onemdm.apk")));
-        pendingIntent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
+//        pendingIntent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
         pendingIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
         pendingIntent.putExtra(Intent.EXTRA_INSTALLER_PACKAGE_NAME, app.getPackageName());
         return PendingIntent.getActivity(

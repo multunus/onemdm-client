@@ -21,6 +21,8 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
+    useLibrary 'org.apache.http.legacy'
+
     defaultConfig {
         applicationId "com.multunus.onemdm"
         minSdkVersion 19
@@ -75,4 +77,11 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
+
+    testCompile 'junit:junit:4.10'
+    testCompile 'org.assertj:assertj-core:1.7.0'
+    testCompile 'org.robolectric:robolectric:3.0'
+    testCompile 'org.mockito:mockito-all:1.8.4'
+
+
 }
