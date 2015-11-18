@@ -8,6 +8,9 @@ public class Device {
     private String model;
     private String uniqueId;
     private String gcmToken;
+    private String osVersion;
+
+    private String clientVersion;
 
     public String getGcmToken() {
         return gcmToken;
@@ -40,4 +43,20 @@ public class Device {
     public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
+    public String getOsVersion() {
+        return osVersion;
+    }
+
+    public void setOsVersion(String osVersion) {
+        this.osVersion = osVersion;
+    }
+
+    public String getClientVersion() {
+        return clientVersion;
+    }
+
+    public void setClientVersion(String clientVersion) {
+        this.clientVersion = clientVersion;
+    }
+
 }

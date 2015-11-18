@@ -2,6 +2,8 @@ package com.multunus.onemdm.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -97,6 +99,8 @@ public class DeviceRegistration {
                 GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
         Logger.debug("GCM Registration Token: " + gcmToken);
         device.setGcmToken(gcmToken);
+        device.setClientVersion(getAppVersion());
+        device.setOsVersion(Build.VERSION.RELEASE);
         return device;
     }
 
@@ -104,6 +108,18 @@ public class DeviceRegistration {
         return Build.MANUFACTURER + " - " + Build.MODEL;
     }
 
+    private String getAppVersion() {
+        try{
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(),
+                    PackageManager.GET_META_DATA);
+            return info.versionName + " - " + info.versionCode;
+        }
+        catch (Exception ex){
+            Rollbar.reportException(ex);
+            Logger.error(ex);
+        }
+        return "";
+    }
     private String getImeiNumber() {
         try {
             TelephonyManager telephonyManager =
