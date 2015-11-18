@@ -3,13 +3,8 @@ package com.multunus.onemdm.gcm;
 
 import android.content.Intent;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.iid.InstanceID;
 import com.google.android.gms.iid.InstanceIDListenerService;
-import com.multunus.onemdm.config.Config;
-import com.multunus.onemdm.network.DeviceRegistration;
-import com.multunus.onemdm.service.RegistrationService;
-import com.multunus.onemdm.util.Logger;
+import com.multunus.onemdm.device.RegistrationService;
 
 public class GCMInstanceIDListenerService extends InstanceIDListenerService {
     /**

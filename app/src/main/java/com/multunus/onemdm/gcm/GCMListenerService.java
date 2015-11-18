@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.multunus.onemdm.config.Config;
 import com.multunus.onemdm.model.App;
-import com.multunus.onemdm.service.AppInstallerService;
+import com.multunus.onemdm.app.AppInstallerService;
 import com.multunus.onemdm.util.Logger;
 
 public class GCMListenerService extends GcmListenerService {

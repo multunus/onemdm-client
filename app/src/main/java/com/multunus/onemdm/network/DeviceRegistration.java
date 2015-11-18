@@ -18,7 +18,6 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.multunus.onemdm.config.Config;
-import com.multunus.onemdm.heartbeat.HeartbeatRecorder;
 import com.multunus.onemdm.model.Device;
 import com.multunus.onemdm.util.Logger;
 import com.rollbar.android.Rollbar;
@@ -69,7 +68,7 @@ public class DeviceRegistration {
             Logger.warning("Exception while registering",e);
         }
         editor.putString(Config.ACCESS_TOKEN, accessToken);
-        editor.commit();
+        editor.apply();
         new HeartbeatRecorder(context).configureNextHeartbeatWithMilliSeconds(nextHeartbeatTime);
     }
 

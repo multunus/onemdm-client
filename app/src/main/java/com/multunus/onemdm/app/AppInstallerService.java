@@ -1,4 +1,4 @@
-package com.multunus.onemdm.service;
+package com.multunus.onemdm.app;
 
 import android.app.DownloadManager;
 import android.app.IntentService;
@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
@@ -51,7 +52,12 @@ public class AppInstallerService extends IntentService {
 
     private void installOrDownloadApp(String apkURL){
         Logger.debug("APK url " + apkURL);
-        downloadAndShowInstallNotification();
+        if(apkURL.equals("")){
+            createActionForInstall();
+        }
+        else {
+            downloadAndShowInstallNotification();
+        }
     }
 
     private void downloadAndShowInstallNotification() {
@@ -102,28 +108,31 @@ public class AppInstallerService extends IntentService {
     private void showAppInstallNotification() {
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
-        PendingIntent resultPendingIntent = createNotificationActionForInstall();
+        PendingIntent resultPendingIntent = createActionForInstallAfterDownload();
 
-        createNotificationForInstall(notificationManager, resultPendingIntent);
+        createNotificationForInstallAndSaveToPreferences(notificationManager, resultPendingIntent);
     }
 
-    private void createNotificationForInstall(NotificationManager notificationManager,
-                                              PendingIntent resultPendingIntent) {
-        Notification notification = new Notification.Builder(context)
-                .setContentTitle(getString(R.string.app_name))
-                .setSmallIcon(R.drawable.cast_ic_notification_0)
-                .setContentText("Click to Install ")
-                .setContentIntent(resultPendingIntent)
-                .setAutoCancel(true)
-                .setOngoing(true)
-                .build();
-        notificationManager.notify(View.generateViewId(), notification);
+    private void createActionForInstall(){
+        final Uri marketUri = Uri.parse("market://details?id=" + app.getPackageName());
+        Intent intent = new Intent(Intent.ACTION_VIEW, marketUri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                context,
+                View.generateViewId(),
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT
+        );
+        NotificationManager notificationManager = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        createNotificationForInstallAndSaveToPreferences(notificationManager, pendingIntent);
     }
 
-    private PendingIntent createNotificationActionForInstall() {
+    private PendingIntent createActionForInstallAfterDownload() {
         Intent pendingIntent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
-        pendingIntent.setData(Uri.fromFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/onemdm.apk")));
-//        pendingIntent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
+        pendingIntent.setData(Uri.fromFile(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS + "/onemdm.apk")));
         pendingIntent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
         pendingIntent.putExtra(Intent.EXTRA_INSTALLER_PACKAGE_NAME, app.getPackageName());
         return PendingIntent.getActivity(
@@ -134,4 +143,25 @@ public class AppInstallerService extends IntentService {
         );
     }
 
+
+    private void createNotificationForInstallAndSaveToPreferences(NotificationManager notificationManager,
+                                                                  PendingIntent resultPendingIntent) {
+        Notification notification = new Notification.Builder(context)
+                .setContentTitle(app.getName())
+                .setSmallIcon(R.drawable.cast_ic_notification_0)
+                .setContentText("Click to Install ")
+                .setContentIntent(resultPendingIntent)
+                .setAutoCancel(true)
+                .setOngoing(true)
+                .build();
+        notificationManager.notify(View.generateViewId(), notification);
+        saveApptoPreferences();
+    }
+
+    private void saveApptoPreferences(){
+        SharedPreferences.Editor editor = this.context.getSharedPreferences(
+                Config.PREFERENCE_TAG, Context.MODE_PRIVATE).edit();
+        editor.putLong(app.getPackageName(),app.getId());
+        editor.apply();
+    }
 }

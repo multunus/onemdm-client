@@ -1,4 +1,4 @@
-package com.multunus.onemdm.service;
+package com.multunus.onemdm.device;
 
 import android.app.IntentService;
 import android.content.Intent;

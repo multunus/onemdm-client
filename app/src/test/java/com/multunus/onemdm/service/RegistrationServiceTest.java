@@ -1,22 +1,13 @@
 package com.multunus.onemdm.service;
 
-import android.annotation.TargetApi;
-import android.app.IntentService;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 
-import com.rollbar.android.Rollbar;
+import com.multunus.onemdm.device.RegistrationService;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.Shadows;
-import org.robolectric.internal.Shadow;
 
 @RunWith(RobolectricTestRunner.class)
 
@@ -34,7 +25,7 @@ public class RegistrationServiceTest {
 
     }
 
-    public class RegistrationServiceMock extends RegistrationService{
+    public class RegistrationServiceMock extends RegistrationService {
 
         public void onHandleIntent( Intent intent ){
             super.onHandleIntent( intent );

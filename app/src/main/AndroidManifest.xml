@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
@@ -43,6 +43,7 @@
         </receiver>
         <!-- [END gcm_receiver] -->
 
+
         <!-- [START gcm_listener] -->
         <service
             android:name=".gcm.GCMListenerService"
@@ -63,13 +64,30 @@
         <!-- [END instanceId_listener] -->
 
         <service
-            android:name=".service.RegistrationService"
+            android:name=".device.RegistrationService"
+            android:exported="false" >
+        </service>
+        <service
+            android:name=".app.AppInstallerService"
             android:exported="false" >
         </service>
 
+        <receiver
+            android:name=".app.AppInstallListener"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <data android:scheme="package" />
+
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
         <service
-            android:name=".service.AppInstallerService"
-            android:exported="false" >
+            android:name=".app.AppInstallListener"
+            android:enabled="true"
+            android:exported="true" >
         </service>
     </application>
 

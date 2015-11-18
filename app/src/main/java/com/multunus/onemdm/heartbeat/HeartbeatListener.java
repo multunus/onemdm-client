@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.multunus.onemdm.config.Config;
+import com.multunus.onemdm.network.HeartbeatRecorder;
 import com.multunus.onemdm.util.Logger;
 
 public class HeartbeatListener extends BroadcastReceiver {

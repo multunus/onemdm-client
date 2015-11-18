@@ -1,4 +1,4 @@
-package com.multunus.onemdm.heartbeat;
+package com.multunus.onemdm.network;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -13,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.multunus.onemdm.config.Config;
+import com.multunus.onemdm.heartbeat.HeartbeatListener;
 import com.multunus.onemdm.util.Logger;
 
 import org.json.JSONObject;
@@ -53,7 +54,8 @@ public class HeartbeatRecorder {
                         configureNextHeartbeatForRetry();
                         Logger.warning(error.toString());
                     }
-                }
+                },
+                context
         );
         requestQueue.add(request);
     }
@@ -83,24 +85,4 @@ public class HeartbeatRecorder {
         return calendar.getTimeInMillis();
     }
 
-    public class CustomJsonObjectRequest extends JsonObjectRequest
-    {
-        public CustomJsonObjectRequest(int method, String url,
-                                       Response.Listener listener,
-                                       Response.ErrorListener errorListener)
-        {
-            super(method, url, listener, errorListener);
-        }
-
-        @Override
-        public Map getHeaders() throws AuthFailureError {
-            String token =  context.getSharedPreferences(Config.PREFERENCE_TAG,
-                    Context.MODE_PRIVATE).getString(Config.ACCESS_TOKEN, "");
-            Map headers = new HashMap();
-            headers.put("Authorization", "Token token="+token);
-            Logger.debug("added header "+token);
-            return headers;
-        }
-
-    }
 }
