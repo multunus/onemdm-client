@@ -71,7 +71,7 @@ public class DeviceRegistration {
         }
         editor.putString(Config.ACCESS_TOKEN, accessToken);
         editor.apply();
-        new HeartbeatRecorder(context).configureNextHeartbeatWithMilliSeconds(nextHeartbeatTime);
+        new HeartbeatRecorder().configureNextHeartbeatWithMilliSeconds(context,nextHeartbeatTime);
     }
 
     private JSONObject getJsonPayload() {

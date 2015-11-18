@@ -24,16 +24,9 @@ import java.util.Map;
 
 public class HeartbeatRecorder {
 
-    private final Context context;
-    private final RequestQueue requestQueue;
 
-    public HeartbeatRecorder(Context context){
-        this.context = context;
-        requestQueue = Volley.newRequestQueue(this.context);
-
-    }
-    public void sendHeartbeatToServer() {
-
+    public void sendHeartbeatToServer(final Context context) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonObjectRequest request = new CustomJsonObjectRequest(
                 Request.Method.POST,
                 Config.HEARTBEAT_URL,
@@ -41,7 +34,7 @@ public class HeartbeatRecorder {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            configureNextHeartbeat(response.getLong("next_heartbeat_time"));
+                            configureNextHeartbeat(context,response.getLong("next_heartbeat_time"));
                         }
                         catch (Exception ex){
 
@@ -51,7 +44,7 @@ public class HeartbeatRecorder {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        configureNextHeartbeatForRetry();
+                        configureNextHeartbeatForRetry(context);
                         Logger.warning(error.toString());
                     }
                 },
@@ -60,16 +53,15 @@ public class HeartbeatRecorder {
         requestQueue.add(request);
     }
 
-    public void configureNextHeartbeat(long nextHearbeatTime) {
-        nextHearbeatTime = nextHearbeatTime * 1000;
-        configureNextHeartbeatWithMilliSeconds(nextHearbeatTime);
+    public void configureNextHeartbeat(Context context,long nextHearbeatTime) {
+        configureNextHeartbeatWithMilliSeconds(context,nextHearbeatTime * 1000);
     }
 
-    public  void configureNextHeartbeatForRetry() {
-        configureNextHeartbeatWithMilliSeconds(getDefaultNextHearbeatTime());
+    public  void configureNextHeartbeatForRetry(Context context) {
+        configureNextHeartbeatWithMilliSeconds(context,getDefaultNextHearbeatTime());
     }
 
-    public void configureNextHeartbeatWithMilliSeconds(long nextHearbeatTime) {
+    public void configureNextHeartbeatWithMilliSeconds(Context context,long nextHearbeatTime) {
         Logger.debug(" next heartbeat time " + nextHearbeatTime);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, HeartbeatListener.class);
