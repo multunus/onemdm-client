@@ -3,7 +3,6 @@ package com.multunus.onemdm.heartbeat;
 import android.content.Intent;
 
 import com.multunus.onemdm.device.RegistrationService;
-import com.multunus.onemdm.heartbeat.HeartbeatListener;
 import com.multunus.onemdm.network.HeartbeatRecorder;
 
 import org.junit.Test;

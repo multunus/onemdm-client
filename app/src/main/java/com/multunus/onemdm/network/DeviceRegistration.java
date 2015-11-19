@@ -29,23 +29,16 @@ import org.json.JSONObject;
 
 public class DeviceRegistration {
 
-    Context context;
-    RequestQueue requestQueue;
-
-    public DeviceRegistration(Context context) {
-        this.context = context;
-        requestQueue = Volley.newRequestQueue(this.context);
-    }
-
-    public void sendRegistrationRequestToServer() {
+    public void sendRegistrationRequestToServer(final Context context) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonObjectRequest deviceRegistrationRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 Config.REGISTRATION_URL,
-                getJsonPayload(),
+                getJsonPayload(context),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        saveSettings(response);
+                        saveSettings(context,response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -58,10 +51,10 @@ public class DeviceRegistration {
         requestQueue.add(deviceRegistrationRequest);
     }
 
-    private void saveSettings(JSONObject response) {
+    private void saveSettings(Context context,JSONObject response) {
         String accessToken = "";
         long nextHeartbeatTime = System.currentTimeMillis();
-        SharedPreferences.Editor editor = this.context.getSharedPreferences(
+        SharedPreferences.Editor editor = context.getSharedPreferences(
                 Config.PREFERENCE_TAG, Context.MODE_PRIVATE).edit();
         try {
             accessToken = response.getString(Config.ACCESS_TOKEN);
@@ -74,13 +67,13 @@ public class DeviceRegistration {
         new HeartbeatRecorder().configureNextHeartbeatWithMilliSeconds(context,nextHeartbeatTime);
     }
 
-    private JSONObject getJsonPayload() {
+    private JSONObject getJsonPayload(Context context) {
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
         JSONObject deviceData = new JSONObject();
         try {
-            deviceData.put("device", new JSONObject(gson.toJson(getDevice())));
+            deviceData.put("device", new JSONObject(gson.toJson(getDevice(context))));
         } catch (Exception e) {
             Logger.error(e);
             Rollbar.reportException(e);
@@ -89,17 +82,17 @@ public class DeviceRegistration {
         return deviceData;
     }
 
-    private Device getDevice() throws Exception{
+    private Device getDevice(Context context) throws Exception{
         Device device = new Device();
         device.setModel(getDeviceModel());
-        device.setImeiNumber(getImeiNumber());
-        device.setUniqueId(getAndroidId());
+        device.setImeiNumber(getImeiNumber(context));
+        device.setUniqueId(getAndroidId(context));
         InstanceID instanceID = InstanceID.getInstance(context);
         String gcmToken = instanceID.getToken(Config.GCM_SENDER_ID,
                 GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
         Logger.debug("GCM Registration Token: " + gcmToken);
         device.setGcmToken(gcmToken);
-        device.setClientVersion(getAppVersion());
+        device.setClientVersion(getAppVersion(context));
         device.setOsVersion(Build.VERSION.RELEASE);
         return device;
     }
@@ -108,7 +101,7 @@ public class DeviceRegistration {
         return Build.MANUFACTURER + " - " + Build.MODEL;
     }
 
-    private String getAppVersion() {
+    private String getAppVersion(Context context) {
         try{
             PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(),
                     PackageManager.GET_META_DATA);
@@ -120,10 +113,10 @@ public class DeviceRegistration {
         }
         return "";
     }
-    private String getImeiNumber() {
+    private String getImeiNumber(Context context) {
         try {
             TelephonyManager telephonyManager =
-                    (TelephonyManager) this.context.getSystemService(Context.TELEPHONY_SERVICE);
+                    (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             return telephonyManager.getDeviceId();
         }
         catch (Exception ex){
@@ -132,8 +125,8 @@ public class DeviceRegistration {
         return "";
     }
 
-    private String getAndroidId() {
+    private String getAndroidId(Context context) {
         return Settings.Secure.getString(
-                this.context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 }

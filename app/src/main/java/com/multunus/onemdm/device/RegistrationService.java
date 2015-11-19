@@ -12,7 +12,7 @@ public class RegistrationService extends IntentService {
 
     public RegistrationService() {
         super("RegistrationService");
-        this.deviceRegistration = new DeviceRegistration(this);
+        this.deviceRegistration = new DeviceRegistration();
     }
 
     RegistrationService(DeviceRegistration deviceRegistration) {
@@ -22,7 +22,7 @@ public class RegistrationService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        deviceRegistration.sendRegistrationRequestToServer();
+        deviceRegistration.sendRegistrationRequestToServer(getApplicationContext());
     }
 
 }
