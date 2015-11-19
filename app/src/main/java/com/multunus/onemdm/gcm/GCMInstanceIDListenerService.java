@@ -15,10 +15,8 @@ public class GCMInstanceIDListenerService extends InstanceIDListenerService {
     // [START refresh_token]
     @Override
     public void onTokenRefresh() {
-        // Fetch updated Instance ID token and notify our app's server of any changes (if applicable).
         Intent intent = new Intent(this, RegistrationService.class);
         startService(intent);
 
     }
-    // [END refresh_token]
 }

@@ -1,8 +1,5 @@
 package com.multunus.onemdm.model;
 
-/**
- * Created by yedhukrishnan on 15/10/15.
- */
 public class Device {
     private String imeiNumber;
     private String model;

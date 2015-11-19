@@ -24,6 +24,7 @@ public class GCMListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
+        Logger.debug("data "+data.toString());
         String message = data.getString("message");
         Logger.debug("Message: " + message);
         Intent intent = new Intent(this, AppInstallerService.class);
@@ -35,7 +36,6 @@ public class GCMListenerService extends GcmListenerService {
         Logger.debug(" app package name "+app.getPackageName());
         Logger.debug(" APK URL = "+app.getApkUrl());
         intent.putExtra(Config.APP_DATA,app);
-//        intent.putExtra(Config.APP_URL,"http://192.168.2.92:3000/onemdm-debug-v1.01.apk");
         startService(intent);
     }
 }
