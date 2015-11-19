@@ -15,29 +15,17 @@ import org.json.JSONObject;
 
 public class AppStatusUpdater {
 
-    private Context context;
-    private RequestQueue requestQueue;
-    private long appInstallationId;
-
-    public AppStatusUpdater(Context context,long appInstallationId) {
-        this.context = context;
-        requestQueue = Volley.newRequestQueue(this.context);
-        this.appInstallationId = appInstallationId;
+    public AppStatusUpdater() {
     }
 
-    public void updateAppInstallationStatus() {
-
+    public void updateAppInstallationStatus(Context context,long appInstallationId) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
         JsonObjectRequest request = new CustomJsonObjectRequest(
                 Request.Method.POST,
                 Config.APP_INSTALLED_URL+"?id="+appInstallationId,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try {
-                        }
-                        catch (Exception ex){
-
-                        }
                     }
                 },
                 new Response.ErrorListener() {

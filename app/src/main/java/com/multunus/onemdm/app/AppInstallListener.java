@@ -12,7 +12,13 @@ import com.multunus.onemdm.network.AppStatusUpdater;
 import com.multunus.onemdm.util.Logger;
 
 public class AppInstallListener extends BroadcastReceiver {
+    private AppStatusUpdater appStatusUpdater;
     public AppInstallListener() {
+        this.appStatusUpdater = new AppStatusUpdater();
+    }
+
+    AppInstallListener(AppStatusUpdater appStatusUpdater){
+        this.appStatusUpdater = appStatusUpdater;
     }
 
     @Override
@@ -27,7 +33,7 @@ public class AppInstallListener extends BroadcastReceiver {
                 Context.MODE_PRIVATE).getLong(packageName,-1);
         if(appInstallationId != -1){
             Logger.debug("Found app for "+packageName+" with installation ID "+appInstallationId);
-            new AppStatusUpdater(context,appInstallationId).updateAppInstallationStatus();
+            appStatusUpdater.updateAppInstallationStatus(context, appInstallationId);
         }
     }
 }
