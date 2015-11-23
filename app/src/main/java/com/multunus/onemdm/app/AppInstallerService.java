@@ -119,7 +119,7 @@ public class AppInstallerService extends IntentService {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context,
-                View.generateViewId(),
+                getUniqueId(),
                 intent,
                 PendingIntent.FLAG_CANCEL_CURRENT
         );
@@ -154,14 +154,18 @@ public class AppInstallerService extends IntentService {
                 .setAutoCancel(true)
                 .setOngoing(true)
                 .build();
-        notificationManager.notify(View.generateViewId(), notification);
+        notificationManager.notify(getUniqueId(), notification);
         saveApptoPreferences();
     }
 
     private void saveApptoPreferences(){
         SharedPreferences.Editor editor = this.context.getSharedPreferences(
                 Config.PREFERENCE_TAG, Context.MODE_PRIVATE).edit();
-        editor.putLong(app.getPackageName(),app.getId());
+        editor.putLong(app.getPackageName(), app.getId());
         editor.apply();
+    }
+
+    protected int getUniqueId(){
+        return View.generateViewId();
     }
 }

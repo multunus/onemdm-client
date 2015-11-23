@@ -9,6 +9,9 @@ public class App implements Parcelable{
     private String name;
     private String apkUrl;
 
+    public App(){
+
+    }
     public App(Parcel source) {
         id = source.readLong();
         name = source.readString();
