@@ -4,11 +4,13 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.multunus.onemdm.BuildConfig;
 import com.multunus.onemdm.app.AppInstallerService;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -17,10 +19,11 @@ import org.robolectric.shadows.ShadowLog;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(manifest=Config.NONE)
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class,sdk = 21)
 public class GCMListenerServiceTest {
 
     @Before
@@ -42,4 +45,14 @@ public class GCMListenerServiceTest {
         assertNotNull(intent.getParcelableExtra(
                 com.multunus.onemdm.config.Config.APP_DATA));
     }
+
+    @Test
+    public void registerGCMListener(){
+
+        Intent intent = new Intent("com.google.android.c2dm.intent.RECEIVE");
+        ShadowApplication application = ShadowApplication.getInstance();
+        assertTrue("GCM Listener not registered ",
+                application.hasReceiverForIntent(intent));
+    }
+
 }
