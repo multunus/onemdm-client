@@ -25,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId "com.multunus.onemdm"
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 23
         versionCode buildNumber
         versionName "1.0"+buildNumber
