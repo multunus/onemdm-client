@@ -13,12 +13,13 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
-import android.view.View;
 
 import com.multunus.onemdm.R;
 import com.multunus.onemdm.config.Config;
 import com.multunus.onemdm.model.App;
 import com.multunus.onemdm.util.Logger;
+
+import java.util.UUID;
 
 public class AppInstallerService extends IntentService {
 
@@ -137,7 +138,7 @@ public class AppInstallerService extends IntentService {
         pendingIntent.putExtra(Intent.EXTRA_INSTALLER_PACKAGE_NAME, app.getPackageName());
         return PendingIntent.getActivity(
                 context,
-                View.generateViewId(),
+                getUniqueId(),
                 pendingIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT
         );
@@ -146,14 +147,21 @@ public class AppInstallerService extends IntentService {
 
     private void createNotificationForInstallAndSaveToPreferences(NotificationManager notificationManager,
                                                                   PendingIntent resultPendingIntent) {
-        Notification notification = new Notification.Builder(context)
+        Notification.Builder notificationBuilder = new Notification.Builder(context)
                 .setContentTitle(app.getName())
                 .setSmallIcon(R.drawable.cast_ic_notification_0)
                 .setContentText("Click to Install ")
                 .setContentIntent(resultPendingIntent)
                 .setAutoCancel(true)
-                .setOngoing(true)
-                .build();
+                .setOngoing(true);
+        Notification notification = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            notification = notificationBuilder.build();
+        }
+        else{
+            notification = notificationBuilder.getNotification();
+        }
+
         notificationManager.notify(getUniqueId(), notification);
         saveApptoPreferences();
     }
@@ -166,6 +174,9 @@ public class AppInstallerService extends IntentService {
     }
 
     protected int getUniqueId(){
-        return View.generateViewId();
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 ){
+//            return View.generateViewId();
+//        }
+        return UUID.randomUUID().hashCode();
     }
 }
