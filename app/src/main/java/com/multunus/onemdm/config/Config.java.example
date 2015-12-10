@@ -1,11 +1,9 @@
 package com.multunus.onemdm.config;
 
-/**
- * Created by yedhukrishnan on 15/10/15.
- */
+import com.multunus.onemdm.BuildConfig;
+
 public class Config {
     public static final String ACCESS_TOKEN = "access_token";
-//    public static final String HOST_URL = "http://onemdm.herokuapp.com/";
     public static final String HOST_URL = (BuildConfig.DEBUG)? "https://demo-onemdm.herokuapp.com/"
         : "http://onemdm.herokuapp.com/"; //"http://192.168.2.92:3000/";
     public static final String REGISTRATION_URL = HOST_URL + "devices";
