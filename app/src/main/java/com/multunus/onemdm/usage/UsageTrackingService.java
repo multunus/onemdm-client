@@ -10,22 +10,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.multunus.onemdm.config.Config;
 import com.multunus.onemdm.model.AppUsage;
 import com.multunus.onemdm.util.Logger;
 
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class UsageTrackingService extends Service {
     AppUsageCollector appUsageCollector = new AppUsageCollector();
@@ -51,22 +47,13 @@ public class UsageTrackingService extends Service {
             scheduledThreadPoolExecutor.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-                    Logger.debug("inside  UsageTrackingService.scheduledThreadPoolExecutor.run");
+                    Logger.debug("inside  UsageTrackingService.scheduledThreadPoolExecutor.run with screen status "
+                            +ScreenStatus.SCREEN_ON);
                     ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
                     Realm realm = Realm.getDefaultInstance();
                     try {
-                        if (ScreenStatus.SCREEN_ON && !isScreenLocked() && isUsageStatsPermissionGranted()) {
+                        if (ScreenStatus.SCREEN_ON) {
                             String runningApp = activityManager.getRunningTasks(1).get(0).topActivity.getPackageName();
-//                        List<UsageStats> usageStats = getUsageStats();
-//                        Collections.sort(usageStats, new Comparator<UsageStats>() {
-//                            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-//                            @Override
-//                            public int compare(UsageStats lhs, UsageStats rhs) {
-//                                return (lhs.getLastTimeUsed() > rhs.getLastTimeUsed()) ? -1 : (lhs.getLastTimeUsed() == rhs.getLastTimeUsed()) ? 0 : 1;
-//                            }
-//                        });
-//                        String runningApp = usageStats.get(0).getPackageName();
-
                             Logger.debug("Currently running app " + runningApp);
 
                             realm.beginTransaction();
@@ -97,6 +84,7 @@ public class UsageTrackingService extends Service {
 
         }
 
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         private List<UsageStats> getUsageStats() {
             long endTime = System.currentTimeMillis();
             long oneDay = 48 * 60 * 60 * 1000;
@@ -107,12 +95,10 @@ public class UsageTrackingService extends Service {
 
         }
 
-
-        private boolean isScreenLocked() {
-            KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-            boolean locked = keyguardManager.inKeyguardRestrictedInputMode();
-            return locked;
-        }
+//        private boolean isScreenLocked() {
+//            KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+//            boolean locked = keyguardManager.inKeyguardRestrictedInputMode();
+//            return locked;
+//        }
     }
-
 }

@@ -95,6 +95,13 @@
             android:name=".usage.UsageTrackingService"
             android:enabled="true"
             android:exported="true"/>
+
+        <receiver
+            android:name=".usage.ScreenStatus"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
+
     </application>
 
 </manifest>
