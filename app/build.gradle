@@ -77,11 +77,11 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
+    compile 'io.realm:realm-android:0.87.2'
 
     testCompile 'junit:junit:4.10'
     testCompile 'org.assertj:assertj-core:1.7.0'
     testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'org.mockito:mockito-all:1.8.4'
-
-
+    testCompile 'io.reactivex:rxjava:1.1.0'
 }

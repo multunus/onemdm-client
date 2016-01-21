@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.multunus.onemdm" >
+    package="com.multunus.onemdm">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -9,6 +9,7 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:name=".OneMDMApplication"
@@ -16,8 +17,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".ui.OneMDMActivity" >
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.OneMDMActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +28,7 @@
 
         <receiver
             android:name=".heartbeat.HeartbeatListener"
-            android:enabled="true" >
+            android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -41,7 +42,7 @@
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:enabled="true"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
@@ -54,7 +55,7 @@
         <!-- [START gcm_listener] -->
         <service
             android:name=".gcm.GCMListenerService"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
@@ -63,7 +64,7 @@
         <!-- [START instanceId_listener] -->
         <service
             android:name=".gcm.GCMInstanceIDListenerService"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
@@ -72,17 +73,16 @@
 
         <service
             android:name=".device.RegistrationService"
-            android:exported="false" >
-        </service>
+            android:exported="false"/>
+
         <service
             android:name=".app.AppInstallerService"
-            android:exported="false" >
-        </service>
+            android:exported="false"/>
 
         <receiver
             android:name=".app.AppInstallListener"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <data android:scheme="package" />
 
@@ -91,6 +91,10 @@
             </intent-filter>
         </receiver>
 
+        <service
+            android:name=".usage.UsageTrackingService"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>
