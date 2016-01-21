@@ -2,6 +2,7 @@ package com.multunus.onemdm.device;
 
 import android.content.Intent;
 
+import com.multunus.onemdm.config.Config;
 import com.multunus.onemdm.network.DeviceRegistration;
 
 import org.junit.Before;
@@ -28,6 +29,7 @@ public class RegistrationServiceTest {
 
     @Test
     public void testRegistration(){
+        Config.TRACK_APP_USAGE = true;
         Intent intent =  new Intent(RuntimeEnvironment.application,RegistrationService.class);
         DeviceRegistration deviceRegistration = mock(DeviceRegistration.class);
         RegistrationService registrationService = new RegistrationService(deviceRegistration);

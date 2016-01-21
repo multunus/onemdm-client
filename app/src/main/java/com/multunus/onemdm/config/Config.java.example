@@ -19,5 +19,5 @@ public class Config {
 
     //Feature Flag(s)
 
-    public static final boolean TRACK_APP_USAGE = false;
+    public static  boolean TRACK_APP_USAGE = false;
 }
