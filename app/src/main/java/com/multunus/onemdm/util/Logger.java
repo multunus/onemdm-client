@@ -8,10 +8,13 @@ import com.rollbar.android.Rollbar;
 /**
  * Created by yedhukrishnan on 15/10/15.
  */
-public class Logger {
+public final class Logger {
     public static final String LOG_TAG = "onemdm";
     private static final boolean DEBUG = BuildConfig.DEBUG;
 
+    private Logger() {
+
+    }
     public static void debug(String message) {
         if(DEBUG) {
             Log.d(LOG_TAG, message);

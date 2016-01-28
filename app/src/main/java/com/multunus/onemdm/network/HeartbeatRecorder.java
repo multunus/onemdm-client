@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -19,8 +18,6 @@ import com.multunus.onemdm.util.Logger;
 import org.json.JSONObject;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 public class HeartbeatRecorder {
 

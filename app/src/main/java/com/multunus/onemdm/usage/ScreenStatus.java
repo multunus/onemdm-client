@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 public class ScreenStatus extends BroadcastReceiver {
-    public static boolean SCREEN_ON = false;
+    static boolean SCREEN_ON = false;
 
     public ScreenStatus() {
 

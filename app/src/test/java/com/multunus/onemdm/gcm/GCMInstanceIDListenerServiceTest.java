@@ -1,6 +1,5 @@
 package com.multunus.onemdm.gcm;
 
-import android.content.ComponentName;
 import android.content.Intent;
 
 import com.multunus.onemdm.BuildConfig;
@@ -10,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
@@ -18,7 +16,6 @@ import org.robolectric.shadows.ShadowLog;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricGradleTestRunner.class)

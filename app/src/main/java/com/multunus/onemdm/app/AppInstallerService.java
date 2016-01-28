@@ -81,8 +81,8 @@ public class AppInstallerService extends IntentService {
         return downloadManager.enqueue(request);
     }
 
-    private BroadcastReceiver configureDownloadCompleteBroadcastReceiver
-            (final DownloadManager downloadManager, final long downloadId) {
+    private BroadcastReceiver configureDownloadCompleteBroadcastReceiver(
+            final DownloadManager downloadManager, final long downloadId) {
         return new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

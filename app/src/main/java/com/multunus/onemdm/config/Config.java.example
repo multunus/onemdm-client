@@ -2,7 +2,7 @@ package com.multunus.onemdm.config;
 
 import com.multunus.onemdm.BuildConfig;
 
-public class Config {
+final public class Config {
     public static final String ACCESS_TOKEN = "access_token";
     public static final String HOST_URL = (BuildConfig.DEBUG)? "https://demo-onemdm.herokuapp.com/"
         : "http://onemdm.herokuapp.com/"; //"http://192.168.2.92:3000/";
@@ -19,5 +19,9 @@ public class Config {
 
     //Feature Flag(s)
 
-    public static  boolean TRACK_APP_USAGE = false;
+    public static final boolean TRACK_APP_USAGE = BuildConfig.DEBUG;
+
+    private Config(){
+
+    }
 }

@@ -1,8 +1,6 @@
 package com.multunus.onemdm.heartbeat;
 
-import android.app.Application;
 import android.content.Intent;
-import android.util.Log;
 
 import com.multunus.onemdm.BuildConfig;
 import com.multunus.onemdm.network.HeartbeatRecorder;
@@ -11,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowApplication;
@@ -20,7 +17,6 @@ import org.robolectric.shadows.ShadowLog;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class,sdk = 21)

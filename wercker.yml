@@ -32,11 +32,15 @@ build:
     - script:
         name: run gradle
         code: |
-          ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
+          ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build jacocoTestReport
   after-steps:
         - wantedly/pretty-slack-notify:
             webhook_url: $SLACK_WEBHOOK_URL
             channel: one-mdm
+    - script:
+        name: Upload coverage report
+        code: |
+          bash <(curl -s https://codecov.io/bash) -X gcov -t a1d2c4c8-05df-4637-b2e2-4dd1d1b35c4f
 deploy:
   steps:
     - script:

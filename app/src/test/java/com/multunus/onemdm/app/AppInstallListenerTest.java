@@ -9,14 +9,11 @@ import com.multunus.onemdm.BuildConfig;
 import com.multunus.onemdm.config.Config;
 import com.multunus.onemdm.network.AppStatusUpdater;
 
-import org.hamcrest.core.AnyOf;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.fakes.RoboSharedPreferences;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLog;
 

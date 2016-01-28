@@ -29,13 +29,14 @@ public class RegistrationServiceTest {
 
     @Test
     public void testRegistration(){
-        Config.TRACK_APP_USAGE = true;
-        Intent intent =  new Intent(RuntimeEnvironment.application,RegistrationService.class);
-        DeviceRegistration deviceRegistration = mock(DeviceRegistration.class);
-        RegistrationService registrationService = new RegistrationService(deviceRegistration);
-        registrationService.onHandleIntent(intent);
-        verify(deviceRegistration).sendRegistrationRequestToServer(RuntimeEnvironment.application);
-        ShadowApplication shadowApplication = shadowOf(RuntimeEnvironment.application);
-        assertNotNull(" Tracking service not started ",shadowApplication.getNextStartedService());
+        if(Config.TRACK_APP_USAGE){
+            Intent intent =  new Intent(RuntimeEnvironment.application,RegistrationService.class);
+            DeviceRegistration deviceRegistration = mock(DeviceRegistration.class);
+            RegistrationService registrationService = new RegistrationService(deviceRegistration);
+            registrationService.onHandleIntent(intent);
+            verify(deviceRegistration).sendRegistrationRequestToServer(RuntimeEnvironment.application);
+            ShadowApplication shadowApplication = shadowOf(RuntimeEnvironment.application);
+            assertNotNull(" Tracking service not started ",shadowApplication.getNextStartedService());
+        }
     }
 }

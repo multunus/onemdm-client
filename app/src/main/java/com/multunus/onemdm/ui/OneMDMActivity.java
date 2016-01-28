@@ -43,8 +43,8 @@ public class OneMDMActivity extends AppCompatActivity {
                 (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
+        return activeNetwork != null
+                && activeNetwork.isConnectedOrConnecting();
     }
 
     private void notifyFailure() {

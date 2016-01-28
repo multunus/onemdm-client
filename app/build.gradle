@@ -1,21 +1,35 @@
 buildscript {
     repositories {
+        jcenter()
         maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
         classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'com.noveogroup.android:check:1.2.3'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
+        // plugin for reporting code coverage to coveralls
+//        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
+//        classpath 'org.ajoberstar:gradle-jacoco:0.2.0'
     }
 }
-apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
+def buildNumber = BUILD_NUM.toInteger()
 
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
+apply plugin: 'com.android.application'
+apply plugin: 'com.noveogroup.android.check'
+apply plugin: 'io.fabric'
+apply plugin: 'jacoco-android'
+
+//apply plugin: "jacoco"
+//apply plugin: 'com.github.kt3k.coveralls'
+//
+
+check {
+    abortOnError true
+    pmd { skip true }
+    findbugs { skip true }
 }
 
-
-def buildNumber = BUILD_NUM.toInteger()
 
 android {
     compileSdkVersion 23
@@ -31,24 +45,32 @@ android {
         versionName "1.0"+buildNumber
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    def releaseBuild = true;
+
     signingConfigs {
         release {
             try {
                 storeFile file(System.getenv("KEYSTORE"))
+                storePassword System.getenv("STORE_PASSWORD")
+                keyAlias System.getenv("KEY_ALIAS")
+                keyPassword System.getenv("KEY_PASSWORD")
             }
             catch (Exception ex){
-
+                releaseBuild = false;
             }
-            storePassword System.getenv("STORE_PASSWORD")
-            keyAlias System.getenv("KEY_ALIAS")
-            keyPassword System.getenv("KEY_PASSWORD")
         }
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            if(releaseBuild) {
+                signingConfig signingConfigs.release
+            }
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
                     def buildTypeName = ""
@@ -69,7 +91,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.google.android.gms:play-services:8.1.0'
     compile 'com.mcxiaoke.volley:library:1.0.16'
@@ -79,9 +100,10 @@ dependencies {
     }
     compile 'io.realm:realm-android:0.87.2'
 
-    testCompile 'junit:junit:4.10'
+    testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:1.7.0'
     testCompile 'org.robolectric:robolectric:3.0'
     testCompile 'org.mockito:mockito-all:1.8.4'
     testCompile 'io.reactivex:rxjava:1.1.0'
 }
+

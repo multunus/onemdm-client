@@ -2,7 +2,6 @@ package com.multunus.onemdm.usage;
 
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
-import android.app.KeyguardManager;
 import android.app.Service;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
@@ -61,7 +60,8 @@ public class UsageTrackingService extends Service {
                             appUsage.setId(Calendar.getInstance().getTimeInMillis());
                             appUsage.setPackageName(runningApp);
                             appUsage.setAppUsedOn(Calendar.getInstance().getTime());
-                            appUsage.setAppUsageDurationPerDayInSeconds(Config.USAGE_COLLECTION_TRACKING_INTERVAL_IN_SECONDS);
+                            appUsage.setAppUsageDurationPerDayInSeconds(
+                                    Config.USAGE_COLLECTION_TRACKING_INTERVAL_IN_SECONDS);
                             realm.commitTransaction();
                         }
                     } catch (Exception ex) {
