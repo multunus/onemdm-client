@@ -8,9 +8,6 @@ buildscript {
         classpath 'io.fabric.tools:gradle:1.+'
         classpath 'com.noveogroup.android:check:1.2.3'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
-        // plugin for reporting code coverage to coveralls
-//        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
-//        classpath 'org.ajoberstar:gradle-jacoco:0.2.0'
     }
 }
 def buildNumber = BUILD_NUM.toInteger()
@@ -19,10 +16,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.noveogroup.android.check'
 apply plugin: 'io.fabric'
 apply plugin: 'jacoco-android'
-
-//apply plugin: "jacoco"
-//apply plugin: 'com.github.kt3k.coveralls'
-//
 
 check {
     abortOnError true

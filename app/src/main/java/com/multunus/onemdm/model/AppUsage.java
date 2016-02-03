@@ -10,7 +10,7 @@ public class AppUsage extends RealmObject {
     private long id;
     private String packageName;
     private long appUsageDurationPerDayInSeconds;
-    private Date appUsedOn;
+    private String appUsedOn;
 
     private boolean synced;
 
@@ -38,11 +38,11 @@ public class AppUsage extends RealmObject {
         this.appUsageDurationPerDayInSeconds = appUsageDurationPerDayInSeconds;
     }
 
-    public Date getAppUsedOn() {
+    public String getAppUsedOn() {
         return appUsedOn;
     }
 
-    public void setAppUsedOn(Date appUsedOn) {
+    public void setAppUsedOn(String appUsedOn) {
         this.appUsedOn = appUsedOn;
     }
 
