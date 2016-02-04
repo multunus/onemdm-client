@@ -1,14 +1,11 @@
 package com.multunus.onemdm.device;
 
 import android.app.IntentService;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.util.Log;
 
 import com.multunus.onemdm.config.Config;
 import com.multunus.onemdm.network.DeviceRegistration;
-import com.multunus.onemdm.usage.ScreenStatus;
 import com.multunus.onemdm.usage.UsageTrackingService;
 import com.multunus.onemdm.util.Logger;
 

@@ -19,7 +19,9 @@ final public class Config {
 
     //Feature Flag(s)
 
-    public static final boolean TRACK_APP_USAGE = BuildConfig.DEBUG;
+    public static final boolean TRACK_APP_USAGE = BuildConfig.DEBUG
+            && android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
+
 
     private Config(){
 

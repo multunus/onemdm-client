@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.multunus.onemdm.config.Config;
 import com.multunus.onemdm.model.AppUsage;
@@ -91,8 +90,8 @@ public class UsageTrackingService extends Service {
             appUsage.setPackageName(runningApp);
             appUsage.setAppUsedOn(today);
             appUsage.setAppUsageDurationPerDayInSeconds(
-                    appUsage.getAppUsageDurationPerDayInSeconds() +
-                            Config.USAGE_COLLECTION_TRACKING_INTERVAL_IN_SECONDS);
+                    appUsage.getAppUsageDurationPerDayInSeconds()
+                            + Config.USAGE_COLLECTION_TRACKING_INTERVAL_IN_SECONDS);
             Logger.debug("app usage for " + runningApp + " is "
                     + appUsage.getAppUsageDurationPerDayInSeconds());
             realm.commitTransaction();
@@ -108,8 +107,8 @@ public class UsageTrackingService extends Service {
 
         @NonNull
         private String today() {
-            return new SimpleDateFormat("yyyy-MM-dd").format
-                                            (Calendar.getInstance().getTime());
+            return new SimpleDateFormat("yyyy-MM-dd").
+                    format(Calendar.getInstance().getTime());
         }
 
         private boolean isUsageStatsPermissionGranted() {

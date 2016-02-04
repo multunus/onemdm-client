@@ -1,6 +1,5 @@
 package com.multunus.onemdm.model;
 
-import java.util.Date;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
