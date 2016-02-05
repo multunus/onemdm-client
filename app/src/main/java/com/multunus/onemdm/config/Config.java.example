@@ -1,6 +1,7 @@
 package com.multunus.onemdm.config;
 
 import android.os.Build;
+import android.app.AlarmManager;
 
 import com.multunus.onemdm.BuildConfig;
 
@@ -12,12 +13,14 @@ final public class Config {
     public static final String HEARTBEAT_URL = HOST_URL + "heartbeats";
     public static final String APP_INSTALLED_URL = HOST_URL + "installations/installed";
     public static final long USAGE_COLLECTION_TRACKING_INTERVAL_IN_SECONDS = 2;
+    public static final long USAGE_SYNCING_INTERVAL = AlarmManager.INTERVAL_HALF_DAY;
 
 
     public static String PREFERENCE_TAG = "onemdm";
     public static final int DEFAULT_HEARTBEAT_RETRY_INTERVAL = 30;
     public static final String GCM_SENDER_ID = "958182646350";
     public static final String APP_DATA = "APP_DATA";
+    public static final int MAX_COUNT_OF_DATA_TO_BE_SYNCED = 5;
 
     //Feature Flag(s)
 

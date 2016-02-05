@@ -64,7 +64,6 @@ public class UsageTrackingService extends Service {
                         }
                     } catch (Exception ex) {
                         Logger.warning("Exception while reading the running tasks", ex);
-//                        realm.cancelTransaction();
                     }
                 }
 
