@@ -1,5 +1,6 @@
 package com.multunus.onemdm.usage;
 
+import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,12 +16,20 @@ public class ScreenStatus extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Logger.debug("Screen status on = "+intent.getAction().equals(Intent.ACTION_SCREEN_ON));
-        Logger.debug("Screen status off = "+intent.getAction().equals(Intent.ACTION_SCREEN_OFF));
-        if(intent.getAction().equals(Intent.ACTION_SCREEN_ON)){
+        if(intent.getAction().equals(Intent.ACTION_SCREEN_ON)
+                && !isScreenLocked(context)){
+            Logger.debug("Screen and keyboard on ");
             SCREEN_ON = true;
-        }else if(intent.getAction().equals(Intent.ACTION_SCREEN_OFF)){
+        }else{
             SCREEN_ON = false;
         }
+        Logger.debug("Screen_ON = "+SCREEN_ON);
     }
+
+    private boolean isScreenLocked(Context context) {
+        KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(
+                Context.KEYGUARD_SERVICE);
+        return keyguardManager.inKeyguardRestrictedInputMode();
+    }
+
 }

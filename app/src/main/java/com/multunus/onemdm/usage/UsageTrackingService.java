@@ -49,8 +49,6 @@ public class UsageTrackingService extends Service {
             scheduledThreadPoolExecutor.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-//                    Logger.debug("inside  UsageTrackingService.scheduledThreadPoolExecutor.run with screen status "
-//                            +ScreenStatus.SCREEN_ON);
                     ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
                     try {
                         Realm realm = Realm.getDefaultInstance();
@@ -131,11 +129,5 @@ public class UsageTrackingService extends Service {
 
 
         }
-
-//        private boolean isScreenLocked() {
-//            KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-//            boolean locked = keyguardManager.inKeyguardRestrictedInputMode();
-//            return locked;
-//        }
     }
 }

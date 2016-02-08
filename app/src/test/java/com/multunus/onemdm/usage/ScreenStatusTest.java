@@ -1,5 +1,7 @@
 package com.multunus.onemdm.usage;
 
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.content.Intent;
 
 import org.junit.Before;
@@ -10,9 +12,9 @@ import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-
 public class ScreenStatusTest {
 
     ScreenStatus screenStatus;
@@ -30,6 +32,15 @@ public class ScreenStatusTest {
     public void screenStatusToBeOnWhenScreenIsOn(){
         screenStatus.onReceive(RuntimeEnvironment.application,new Intent(Intent.ACTION_SCREEN_ON));
         assertTrue("Screen should be on", ScreenStatus.SCREEN_ON);
+    }
+
+    @Test
+    public void screenStatusToBeOffKeyboardIsLocked(){
+        KeyguardManager mgr = (KeyguardManager) RuntimeEnvironment.application.
+                getSystemService(Context.KEYGUARD_SERVICE);
+        shadowOf(mgr).setinRestrictedInputMode(true);
+        screenStatus.onReceive(RuntimeEnvironment.application, new Intent(Intent.ACTION_SCREEN_ON));
+        assertFalse("Screen should be off", ScreenStatus.SCREEN_ON);
     }
 
     @Test
