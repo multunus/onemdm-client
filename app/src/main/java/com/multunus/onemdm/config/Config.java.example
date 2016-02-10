@@ -3,8 +3,6 @@ package com.multunus.onemdm.config;
 import android.os.Build;
 import android.app.AlarmManager;
 
-import com.multunus.onemdm.BuildConfig;
-
 final public class Config {
     public static final String ACCESS_TOKEN = "access_token";
     public static final String HOST_URL = (BuildConfig.DEBUG)? "https://demo-onemdm.herokuapp.com/"
@@ -25,8 +23,7 @@ final public class Config {
 
     //Feature Flag(s)
 
-    public static final boolean TRACK_APP_USAGE = BuildConfig.DEBUG
-            && android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
+    public static final boolean TRACK_APP_USAGE = android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
 
 
     private Config(){
