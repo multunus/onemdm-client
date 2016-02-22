@@ -1,13 +1,9 @@
 package com.multunus.onemdm.usage;
 
-import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.Service;
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 
@@ -17,7 +13,6 @@ import com.multunus.onemdm.util.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -106,28 +101,6 @@ public class UsageTrackingService extends Service {
         private String today() {
             return new SimpleDateFormat("yyyy-MM-dd").
                     format(Calendar.getInstance().getTime());
-        }
-
-        private boolean isUsageStatsPermissionGranted() {
-            int currentAPIVersion = android.os.Build.VERSION.SDK_INT;
-            if (currentAPIVersion >= Build.VERSION_CODES.LOLLIPOP) {
-                List<UsageStats> usageStats = getUsageStats();
-                return !usageStats.isEmpty();
-            } else {
-                return true;
-            }
-
-        }
-
-        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-        private List<UsageStats> getUsageStats() {
-            long endTime = System.currentTimeMillis();
-            long oneDay = 48 * 60 * 60 * 1000;
-            UsageStatsManager mUsageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
-            return mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST,
-                    endTime - oneDay, endTime);
-
-
         }
     }
 }

@@ -38,9 +38,8 @@ public class OneMDMApplication extends Application{
         Intent intent = new Intent(this, AppUsageDataSyncer.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 this, 0, intent, 0);
-        long interval = Config.USAGE_SYNCING_INTERVAL;
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis(), interval,
+                System.currentTimeMillis(), Config.USAGE_SYNCING_INTERVAL,
                 pendingIntent);
 
         Logger.debug("registered alarmManager");
