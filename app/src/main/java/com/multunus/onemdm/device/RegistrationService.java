@@ -4,10 +4,9 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
+import com.multunus.onemdm.OneMDMService;
 import com.multunus.onemdm.config.Config;
 import com.multunus.onemdm.network.DeviceRegistration;
-import com.multunus.onemdm.usage.UsageTrackingService;
-import com.multunus.onemdm.util.Logger;
 
 public class RegistrationService extends IntentService {
 
@@ -27,10 +26,7 @@ public class RegistrationService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         deviceRegistration.sendRegistrationRequestToServer(getApplicationContext());
         Log.d(Config.PREFERENCE_TAG, "inside RegistrationService.onHandleIntent");
-        if(Config.TRACK_APP_USAGE) {
-            Logger.debug("starting tracking service");
-            startService(new Intent(this, UsageTrackingService.class));
-        }
+        startService(new Intent(this.getApplicationContext(), OneMDMService.class));
     }
 
 }

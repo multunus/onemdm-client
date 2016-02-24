@@ -73,11 +73,10 @@
 
         <service
             android:name=".device.RegistrationService"
-            android:exported="false"/>
-
+            android:exported="false" />
         <service
             android:name=".app.AppInstallerService"
-            android:exported="false"/>
+            android:exported="false" />
 
         <receiver
             android:name=".app.AppInstallListener"
@@ -90,12 +89,6 @@
                 <action android:name="android.intent.action.PACKAGE_CHANGED" />
             </intent-filter>
         </receiver>
-
-        <service
-            android:name=".usage.UsageTrackingService"
-            android:enabled="true"
-            android:exported="true"/>
-
         <receiver
             android:name=".usage.AppUsageDataSyncer"
             android:enabled="true">
@@ -104,6 +97,24 @@
             </intent-filter>
         </receiver>
 
+        <service
+            android:name=".OneMDMService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":app_usage_collector_service" />
+
+        <receiver
+            android:name=".usage.ScreenStatusTracker"
+            android:enabled="true"
+            android:exported="true"></receiver>
+        <receiver
+            android:name=".BootCompleteReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

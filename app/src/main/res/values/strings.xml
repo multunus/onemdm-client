@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">OneMDM</string>
+    <string name="onemdm_running_text">OneMDM is running</string>
 </resources>
