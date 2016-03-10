@@ -35,7 +35,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode buildNumber
-        versionName "1.0"+buildNumber
+        versionName "1.0."+buildNumber
     }
 
     compileOptions {
