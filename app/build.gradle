@@ -2,6 +2,9 @@ buildscript {
     repositories {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
+        maven {
+            url "https://repo.eclipse.org/content/repositories/paho-releases/"
+        }
     }
 
     dependencies {
@@ -92,6 +95,9 @@ dependencies {
         transitive = true;
     }
     compile 'io.realm:realm-android:0.87.2'
+    compile('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
+        exclude module: 'support-v4'
+    }
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:1.7.0'

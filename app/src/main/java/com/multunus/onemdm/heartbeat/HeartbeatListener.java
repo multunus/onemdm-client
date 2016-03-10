@@ -4,8 +4,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.multunus.onemdm.MQTTConnector;
 import com.multunus.onemdm.network.HeartbeatRecorder;
 import com.multunus.onemdm.util.Logger;
+
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttClient;
 
 public class HeartbeatListener extends BroadcastReceiver {
 
@@ -23,5 +30,6 @@ public class HeartbeatListener extends BroadcastReceiver {
         Logger.debug("broadcast received for alarm manager");
 
         heartbeatRecorder.sendHeartbeatToServer(context);
+        MQTTConnector.getInstance(context).publish();
     }
 }

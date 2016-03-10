@@ -103,6 +103,8 @@
             android:exported="true"
             android:process=":app_usage_collector_service" />
 
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
+
         <receiver
             android:name=".usage.ScreenStatusTracker"
             android:enabled="true"
