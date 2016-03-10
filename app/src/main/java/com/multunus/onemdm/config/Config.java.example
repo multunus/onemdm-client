@@ -21,7 +21,7 @@ final public class Config {
     public static final int DEFAULT_HEARTBEAT_RETRY_INTERVAL = 30;
     public static final String GCM_SENDER_ID = "958182646350";
     public static final String APP_DATA = "APP_DATA";
-    public static final int MAX_COUNT_OF_DATA_TO_BE_SYNCED = 5;
+    public static final int MAX_COUNT_OF_DATA_TO_BE_SYNCED = 100;
 
     //Feature Flag(s)
 
