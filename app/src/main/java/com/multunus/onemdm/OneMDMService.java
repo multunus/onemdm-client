@@ -49,7 +49,7 @@ public class OneMDMService extends Service {
         Notification notification = new NotificationCompat.Builder(this)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.onemdm_running_text))
-                .setSmallIcon(R.drawable.cast_ic_notification_0)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .build();
         startForeground(400, notification);
         return START_STICKY;
