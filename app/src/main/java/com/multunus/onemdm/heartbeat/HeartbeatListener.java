@@ -30,6 +30,6 @@ public class HeartbeatListener extends BroadcastReceiver {
         Logger.debug("broadcast received for alarm manager");
 
         heartbeatRecorder.sendHeartbeatToServer(context);
-        MQTTConnector.getInstance(context).publish();
+        MQTTConnector.getInstance(context.getApplicationContext()).publish();
     }
 }

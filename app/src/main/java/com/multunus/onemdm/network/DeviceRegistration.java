@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
 import com.android.volley.Request;
@@ -21,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.multunus.onemdm.config.Config;
 import com.multunus.onemdm.model.Device;
+import com.multunus.onemdm.util.Helper;
 import com.multunus.onemdm.util.Logger;
 import com.rollbar.android.Rollbar;
 
@@ -86,7 +86,7 @@ public class DeviceRegistration {
         Device device = new Device();
         device.setModel(getDeviceModel());
         device.setImeiNumber(getImeiNumber(context));
-        device.setUniqueId(getAndroidId(context));
+        device.setUniqueId(Helper.getAndroidId(context));
         InstanceID instanceID = InstanceID.getInstance(context);
         String gcmToken = instanceID.getToken(Config.GCM_SENDER_ID,
                 GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
@@ -123,10 +123,5 @@ public class DeviceRegistration {
             //Ignoring as its a known bug in Marshmellow
         }
         return "";
-    }
-
-    private String getAndroidId(Context context) {
-        return Settings.Secure.getString(
-                context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 }

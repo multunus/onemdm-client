@@ -2,6 +2,8 @@ package com.multunus.onemdm;
 
 import android.content.Context;
 
+import com.multunus.onemdm.config.Config;
+import com.multunus.onemdm.util.Helper;
 import com.multunus.onemdm.util.Logger;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -38,7 +40,7 @@ public class MQTTConnector {
             String clientId = MqttClient.generateClientId();
             Logger.debug("clientId "+clientId);
             client =
-                    new MqttAndroidClient(context, "tcp://test.mosquitto.org:1883",
+                    new MqttAndroidClient(context, Config.MQTT_HOST,
                             clientId);
             Logger.debug("client object created");
             IMqttToken token = client.connect();
@@ -46,6 +48,7 @@ public class MQTTConnector {
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+                    self.dispatchMessage();
                     Logger.debug(" MQTT.connect onSuccess");
                 }
 
@@ -65,8 +68,19 @@ public class MQTTConnector {
     }
 
     public void publish(){
+        if (self.client != null && self.client.isConnected()) {
+            self.dispatchMessage();
+        } else {
+            Logger.warning("MQTT.publish no connection available");
+        }
+    }
+
+    private void dispatchMessage() {
         try {
-            IMqttDeliveryToken deliveryToken = client.publish("device/heartbeat", " heartbeat with MQTT".getBytes("UTF-8"), 0, true);
+            String deviceId = Helper.getAndroidId(context);
+            String timestamp = ((Long) System.currentTimeMillis()).toString();
+            String data = "{\"deviceId\" : \""+ deviceId +"\", \"createdAt\" : \""+ timestamp +"\"}";
+            IMqttDeliveryToken deliveryToken = client.publish("device/heartbeat", data.getBytes("UTF-8"), 0, true);
             deliveryToken.setActionCallback(new IMqttActionListener() {
 
                 @Override
@@ -84,6 +98,5 @@ public class MQTTConnector {
         } catch (Exception ex) {
             Logger.warning(" Exception while MQTT.publish ", ex);
         }
-
     }
 }

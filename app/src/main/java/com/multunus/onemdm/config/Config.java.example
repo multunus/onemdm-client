@@ -9,6 +9,7 @@ final public class Config {
     public static final String ACCESS_TOKEN = "access_token";
     public static final String HOST_URL = (BuildConfig.DEBUG)? "https://demo-onemdm.herokuapp.com/"
         : "http://onemdm.herokuapp.com/"; //"http://192.168.2.92:3000/";
+    public static final String MQTT_HOST = "tcp://test.mosquitto.org:1883";
     public static final String REGISTRATION_URL = HOST_URL + "devices";
     public static final String HEARTBEAT_URL = HOST_URL + "heartbeats";
     public static final String APP_USAGE_TRACKING_URL = HOST_URL + "app_usages";

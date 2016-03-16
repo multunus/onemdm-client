@@ -16,6 +16,6 @@ public class OneMDMApplication extends Application{
         }
         RealmConfiguration config = new RealmConfiguration.Builder(this).build();
         Realm.setDefaultConfiguration(config);
-        MQTTConnector.getInstance(this).connect();
+        MQTTConnector.getInstance(this.getApplicationContext()).connect();
     }
 }
