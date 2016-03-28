@@ -1,6 +1,7 @@
 package com.multunus.onemdm;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.multunus.onemdm.config.Config;
 import com.multunus.onemdm.util.Helper;
@@ -10,7 +11,9 @@ import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 /**
  * Created by leena on 04/03/16.
@@ -21,6 +24,7 @@ public class MQTTConnector {
 
     private static MQTTConnector self = null;
     private MqttAndroidClient client;
+    private IMqttToken token;
 
     private MQTTConnector(Context context){
         this.context = context;
@@ -35,36 +39,11 @@ public class MQTTConnector {
 
     public void connect(){
         Logger.debug("connecting to MQTT Broker");
-
-        try {
-            String clientId = MqttClient.generateClientId();
-            Logger.debug("clientId "+clientId);
-            client =
-                    new MqttAndroidClient(context, Config.MQTT_HOST,
-                            clientId);
-            Logger.debug("client object created");
-            IMqttToken token = client.connect();
-            Logger.debug("client connected");
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    self.dispatchMessage();
-                    Logger.debug(" MQTT.connect onSuccess");
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    // Something went wrong e.g. connection timeout or firewall problems
-                    Logger.warning(" MQTT.connect onFailure", exception);
-
-                }
-            });
-
-        }
-        catch (Exception ex){
-            Logger.warning("exception while connecting to MQTT Broker",ex);
-        }
-
+        String clientId = MqttClient.generateClientId();
+        client =
+                new MqttAndroidClient(context, Config.MQTT_HOST,
+                        clientId);
+        connectToMqttServer();
     }
 
     public void publish(){
@@ -72,6 +51,7 @@ public class MQTTConnector {
             self.dispatchMessage();
         } else {
             Logger.warning("MQTT.publish no connection available");
+            connectToMqttServer();
         }
     }
 
@@ -97,6 +77,17 @@ public class MQTTConnector {
 
         } catch (Exception ex) {
             Logger.warning(" Exception while MQTT.publish ", ex);
+        }
+    }
+
+    private void connectToMqttServer() {
+        try {
+            Logger.debug("mqtt client trying to connect");
+            token = client.connect();
+            Logger.debug("Mqtt pending tokens " + String.valueOf(client.getPendingDeliveryTokens().length));
+        }
+        catch (Exception ex){
+            Logger.warning("exception while connecting to MQTT Broker",ex);
         }
     }
 }
